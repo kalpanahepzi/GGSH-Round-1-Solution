@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Employee Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #ff7e5f, #feb47b);
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    #employeeForm {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="date"] {
+      width: calc(100% - 10px);
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      font-size: 14px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .error {
+      color: red;
+      font-size: 12px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <form id="employeeForm">
+    <label>ID: 
+      <input type="text" id="empID" placeholder="Enter Employee ID">
+      <span class="error" id="idError">Employee ID is required</span>
+    </label>
+    
+    <label>Name: 
+      <input type="text" id="empName" placeholder="Enter Name">
+      <span class="error" id="nameError">Name is required</span>
+    </label>
+    
+    <label>DOB: 
+      <input type="date" id="empDOB">
+      <span class="error" id="dobError">Please select a valid DOB</span>
+    </label>
+    
+    <label>Department: 
+      <input type="text" id="empDept" placeholder="Enter Department">
+      <span class="error" id="deptError">Department is required</span>
+    </label>
+    
+    <button type="button" onclick="downloadJSON()">Download JSON</button>
+  </form>
+
+  <script>
+    function validateForm() {
+      let isValid = true;
+
+      // Validate Employee ID
+      const empID = document.getElementById("empID").value;
+      if (!empID) {
+        document.getElementById("idError").style.display = "block";
+        isValid = false;
+      } else {
+        document.getElementById("idError").style.display = "none";
+      }
+
+      // Validate Name
+      const empName = document.getElementById("empName").value;
+      if (!empName) {
+        document.getElementById("nameError").style.display = "block";
+        isValid = false;
+      } else {
+        document.getElementById("nameError").style.display = "none";
+      }
+
+      // Validate DOB
+      const empDOB = document.getElementById("empDOB").value;
+      if (!empDOB) {
+        document.getElementById("dobError").style.display = "block";
+        isValid = false;
+      } else {
+        document.getElementById("dobError").style.display = "none";
+      }
+
+      // Validate Department
+      const empDept = document.getElementById("empDept").value;
+      if (!empDept) {
+        document.getElementById("deptError").style.display = "block";
+        isValid = false;
+      } else {
+        document.getElementById("deptError").style.display = "none";
+      }
+
+      return isValid;
+    }
+
+    function downloadJSON() {
+      if (validateForm()) {
+        const employee = {
+          id: document.getElementById("empID").value,
+          name: document.getElementById("empName").value,
+          dob: document.getElementById("empDOB").value,
+          department: document.getElementById("empDept").value
+        };
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(employee));
+        const downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", dataStr);
+        downloadAnchorNode.setAttribute("download", "employee.json");
+        document.body.appendChild(downloadAnchorNode);
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+      }
+    }
+  </script>
+</body>
+</html>
